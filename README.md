@@ -842,7 +842,7 @@ class MySQLPool {
                 echo "MySQL QUERY FAIL [".$mysql->errno."][".$mysql->error."], sql=[{$sql}], map=[".json_encode($map)."]";
 
                 if ($mysql->errno == 2006 || $mysql->errno == 2013) {
-                    //重连MySQL
+                    //reconnect MySQL
                     $ret = $this->connect($mysql, true);
                     if ($ret) {
                         $ret = $this->real_query($mysql, $sql, $map);
