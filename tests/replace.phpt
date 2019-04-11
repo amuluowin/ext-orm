@@ -18,7 +18,18 @@ $ret = swoole_orm::replace("userinfo", $replace_data);
 var_dump($ret);
 
 --EXPECT--
-array(1) {
+array(2) {
   ["sql"]=>
-  string(149) "REPLACE INTO `userinfo` (`user_id`,`appid`,`union`,`session_key`,`nickname`,`province`,`gender`) values (111111,'wx8bd51923ccbd5200',NULL,1,0,3.18,1)"
+  string(122) "REPLACE INTO `userinfo` (`user_id`,`appid`,`union`,`session_key`,`nickname`,`province`,`gender`) values (?,?,NULL,1,0,?,?)"
+  ["bind_value"]=>
+  array(4) {
+    [0]=>
+    int(111111)
+    [1]=>
+    string(18) "wx8bd51923ccbd5200"
+    [2]=>
+    float(3.18)
+    [3]=>
+    int(1)
+  }
 }

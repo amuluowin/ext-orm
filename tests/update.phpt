@@ -13,10 +13,14 @@ var_dump($ret);
 --EXPECT--
 array(2) {
   ["sql"]=>
-  string(74) "UPDATE `user_info_test` SET `height` = 185,`age` = 32 WHERE `username` = ?"
+  string(71) "UPDATE `user_info_test` SET `height` = ?,`age` = ? WHERE `username` = ?"
   ["bind_value"]=>
-  array(1) {
+  array(3) {
     [0]=>
+    int(185)
+    [1]=>
+    int(32)
+    [2]=>
     string(8) "smallhow"
   }
 }

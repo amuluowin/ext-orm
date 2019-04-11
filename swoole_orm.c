@@ -160,7 +160,7 @@ PHP_METHOD(swoole_orm, replace) {
     //解析data数据
     char *replace_sql, *replace_keys,*replace_value;
     char *key;
-    zval *value;
+    zval *value, *map;
     uint32_t key_len;
     int key_type;
     char longval[MAP_ITOA_INT_SIZE], doubleval[32];
@@ -168,7 +168,10 @@ PHP_METHOD(swoole_orm, replace) {
     sw_orm_string_emalloc_32(&replace_sql, 0);
     sw_orm_string_emalloc_32(&replace_keys, 0);
     sw_orm_string_emalloc_32(&replace_value, 0);
-
+	
+	SW_ORM_MAKE_STD_ZVAL(map);
+    array_init(map);
+    
     SW_ORM_HASHTABLE_FOREACH_START2(Z_ARRVAL_P(data), key, key_len, key_type, value)
     if (HASH_KEY_IS_STRING != key_type) {
         sw_orm_string_efree_32(replace_keys);
@@ -193,16 +196,16 @@ PHP_METHOD(swoole_orm, replace) {
             sw_orm_multi_memcpy_auto_realloc(&replace_value, 1, "0,");
             break;
         case IS_LONG:
-            sw_orm_itoa(Z_LVAL_P(value), longval);
-            sw_orm_multi_memcpy_auto_realloc(&replace_value, 2, longval, ",");
+            add_map(map, value);
+            sw_orm_multi_memcpy_auto_realloc(&replace_value, 1, "?,");
             break;
-
         case IS_DOUBLE:
-            sprintf(doubleval, "%g", Z_DVAL_P(value));
-            sw_orm_multi_memcpy_auto_realloc(&replace_value, 2, doubleval, ",");
+            add_map(map, value);
+            sw_orm_multi_memcpy_auto_realloc(&replace_value, 1, "?,");
             break;
         case IS_STRING:
-            sw_orm_multi_memcpy_auto_realloc(&replace_value, 3, "'", Z_STRVAL_P(value), "',");
+            add_map(map, value);
+            sw_orm_multi_memcpy_auto_realloc(&replace_value, 1, "?,");
             break;
         }
 
@@ -225,6 +228,7 @@ PHP_METHOD(swoole_orm, replace) {
     sw_orm_string_efree_32(replace_sql);
     
     add_assoc_zval(ret_val, "sql", z_sql);
+    add_assoc_zval(ret_val, "bind_value", map);
     RETVAL_ZVAL(ret_val, 1, 1);
     
 }
@@ -242,10 +246,13 @@ PHP_METHOD(swoole_orm, insert) {
     //解析data数据
     char *insert_sql, *insert_keys,*insert_value;
     char *key;
-    zval *value;
+    zval *value, *map;
     uint32_t key_len;
     int key_type;
     char longval[MAP_ITOA_INT_SIZE], doubleval[32];
+    
+    SW_ORM_MAKE_STD_ZVAL(map);
+    array_init(map);
 
     sw_orm_string_emalloc_32(&insert_sql, 0);
     sw_orm_string_emalloc_32(&insert_keys, 0);
@@ -275,16 +282,16 @@ PHP_METHOD(swoole_orm, insert) {
             sw_orm_multi_memcpy_auto_realloc(&insert_value, 1, "0,");
             break;
         case IS_LONG:
-            sw_orm_itoa(Z_LVAL_P(value), longval);
-            sw_orm_multi_memcpy_auto_realloc(&insert_value, 2, longval, ",");
+            add_map(map, value);
+            sw_orm_multi_memcpy_auto_realloc(&insert_value, 1, "?,");
             break;
-
         case IS_DOUBLE:
-            sprintf(doubleval, "%g", Z_DVAL_P(value));
-            sw_orm_multi_memcpy_auto_realloc(&insert_value, 2, doubleval, ",");
+            add_map(map, value);
+            sw_orm_multi_memcpy_auto_realloc(&insert_value, 1, "?,");
             break;
         case IS_STRING:
-            sw_orm_multi_memcpy_auto_realloc(&insert_value, 3, "'", Z_STRVAL_P(value), "',");
+            add_map(map, value);
+            sw_orm_multi_memcpy_auto_realloc(&insert_value, 1, "?,");
             break;
         }
 
@@ -307,6 +314,7 @@ PHP_METHOD(swoole_orm, insert) {
     sw_orm_string_efree_32(insert_sql);
     
     add_assoc_zval(ret_val, "sql", z_sql);
+    add_assoc_zval(ret_val, "bind_value", map);
     RETVAL_ZVAL(ret_val, 1, 1);
 }
 
@@ -326,10 +334,13 @@ PHP_METHOD(swoole_orm, update) {
 
     char *update_datas;
     char *key;
-    zval *value;
+    zval *value, *map;
     uint32_t key_len;
     int key_type;
     char longval[MAP_ITOA_INT_SIZE], doubleval[32];
+    
+    SW_ORM_MAKE_STD_ZVAL(map);
+    array_init(map);
 
     sw_orm_string_emalloc_32(&update_datas, 0);
 
@@ -356,16 +367,16 @@ PHP_METHOD(swoole_orm, update) {
             sw_orm_multi_memcpy_auto_realloc(&update_datas, 1, "0,");
             break;
         case IS_LONG:
-            sw_orm_itoa(Z_LVAL_P(value), longval);
-            sw_orm_multi_memcpy_auto_realloc(&update_datas, 2, longval, ",");
+            add_map(map, value);
+            sw_orm_multi_memcpy_auto_realloc(&update_datas, 1, "?,");
             break;
-
         case IS_DOUBLE:
-            sprintf(doubleval, "%g", Z_DVAL_P(value));
-            sw_orm_multi_memcpy_auto_realloc(&update_datas, 2, doubleval, ",");
+            add_map(map, value);
+            sw_orm_multi_memcpy_auto_realloc(&update_datas, 1, "?,");
             break;
         case IS_STRING:
-            sw_orm_multi_memcpy_auto_realloc(&update_datas, 3, "'", Z_STRVAL_P(value), "',");
+            add_map(map, value);
+            sw_orm_multi_memcpy_auto_realloc(&update_datas, 1, "?,");
             break;
         }
 
@@ -377,10 +388,6 @@ PHP_METHOD(swoole_orm, update) {
     sw_orm_string_efree_32(update_datas);
     
     //where条件
-    zval *map;
-    SW_ORM_MAKE_STD_ZVAL(map);
-    array_init(map);
-		
     where_clause(where, map, & update_sql);
     
     zval *ret_val = NULL, *z_sql = NULL;
