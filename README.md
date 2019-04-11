@@ -6,7 +6,7 @@ MySQL ORM User Guide
 ## Catalogue
   - Instruction
   - Requirement
-  - Compire swoole_orm in linux
+  - Compile swoole_orm in linux
   - Create test table
   - Start Coroutine MySQL
   - Native SQL query
@@ -30,7 +30,7 @@ MySQL ORM User Guide
 ## Requirement
 - PHP 7.0 + 
 
-## Compire swoole_orm in linux
+## Compile swoole_orm in linux
 ```
 ## path to is your PHP install dir , dest lib: swoole_orm.so
 
