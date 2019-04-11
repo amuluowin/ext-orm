@@ -421,7 +421,7 @@ insert($table, $data)
 > 要插入的数据
 
 #### return [int]
-> 失败返回false，否则返回一个数组，包含查询语句 sql。
+> 失败返回false，否则返回一个数组，包含查询语句 sql和绑定参数bind_value。
  
 ```php
 $data = array('username' => 'smallhow','sexuality' => 'male','age' => 35, 'height' => '168');
@@ -451,7 +451,7 @@ replace($table, $data)
 > 需要替换的数据
 
 #### return [int]
-> 失败返回false，否则返回一个数组，包含查询语句 sql。
+> 失败返回false，否则返回一个数组，包含查询语句 sql和绑定参数bind_value。
  
 ```php
 $data = array('uid' => 35, 'username' => 'smallhow','sexuality' => 'male','age' => 35, 'height' => '168');
