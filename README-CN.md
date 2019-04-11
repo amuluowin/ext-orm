@@ -428,11 +428,12 @@ $data = array('username' => 'smallhow','sexuality' => 'male','age' => 35, 'heigh
 $sql_stat = swoole_orm::insert("user_info_test", $data);
 		
 if ($sql_stat !== false) {
-  $ret = $mysql->query($sql_stat['sql']);
-  if($ret === false) {
+  $stmt = $mysql->prepare($sql_stat['sql']);
+  if($stmt === false) {
     echo $mysql->errno . "\n";
     echo $mysql->error . "\n";
   } else {
+    $ret = $stmt->execute($sql_stat['bind_value']);
     echo $mysql->insert_id . "\n";
   }
 }
@@ -458,10 +459,12 @@ $data = array('uid' => 35, 'username' => 'smallhow','sexuality' => 'male','age' 
 $sql_stat = swoole_orm::replace("user_info_test", $data);
 
 if ($sql_stat !== false) {
-  $ret = $mysql->query($sql_stat['sql']);
-  if($ret === false) {
+  $stmt = $mysql->prepare($sql_stat['sql']);
+  if($stmt === false) {
     echo $mysql->errno . "\n";
     echo $mysql->error . "\n";
+  } else {
+    $ret = $stmt->execute($sql_stat['bind_value']);
   }
 }
 
