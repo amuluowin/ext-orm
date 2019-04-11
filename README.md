@@ -421,7 +421,7 @@ insert($table, $data)
 > insert data
 
 #### return [int]
->Fail if false is returned, otherwise an array with select sql.<br>
+>Fail if false is returned, otherwise an array with insert sql and bind value.<br>
  
 ```php
 $data = array('username' => 'smallhow','sexuality' => 'male','age' => 35, 'height' => '168');
@@ -451,7 +451,7 @@ replace($table, $data)
 > replace data
 
 #### return [int]
->Fail if false is returned, otherwise an array with select sql.<br>
+>Fail if false is returned, otherwise an array with replace sql and bind value.<br>
  
 ```php
 $data = array('uid' => 35, 'username' => 'smallhow','sexuality' => 'male','age' => 35, 'height' => '168');
