@@ -57,7 +57,6 @@ char* sw_orm_multi_memcpy_auto_realloc(char** source, int n_value, ...) {
 		dest = *source;
 	}
 	
-	//���¸�ֵ
 	count=0;
 	va_start(var_arg, n_value);
 	while(count < n_value) {
