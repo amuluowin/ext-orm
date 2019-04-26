@@ -447,6 +447,13 @@ PHP_METHOD(swoole_orm, select) {
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sz|zz", &table, &table_len, &join, &columns, &where) == FAILURE) {
         RETURN_FALSE;
     }
+    
+    //是否查询单个列，当 where 为空的时候， 判断 join 是不是 "*"，否则判断 columns 是不是 "*"
+    long is_single_column = 0;
+    if ((SW_ORM_IS_NULL(where) && Z_TYPE_P(join) == IS_STRING && strcmp(Z_STRVAL_P(join), "*") != 0 && sw_orm_strpos(Z_STRVAL_P(join), ",") < 0)
+            ||(!SW_ORM_IS_NULL(where) && Z_TYPE_P(columns) == IS_STRING && strcmp(Z_STRVAL_P(columns), "*") != 0) && sw_orm_strpos(Z_STRVAL_P(join), ",") < 0) {
+        is_single_column = 1;
+    }
 
     //查询语句初始化
     char *sql;
@@ -468,6 +475,7 @@ PHP_METHOD(swoole_orm, select) {
     
     add_assoc_zval(ret_val, "sql", z_sql);
     add_assoc_zval(ret_val, "bind_value", map);
+    add_assoc_long(ret_val, "is_single_column", is_single_column);
     RETVAL_ZVAL(ret_val, 1, 1);
 }
 

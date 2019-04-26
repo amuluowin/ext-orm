@@ -58,7 +58,7 @@ $ret = swoole_orm::select($table, $join, $columns, $where);
 var_dump($ret);
 
 --EXPECT--
-array(2) {
+array(3) {
   ["sql"]=>
   string(862) "SELECT username AS `u`,age FROM `userinfo` AS `a` RIGHT JOIN `T_AAA` AS `a1` USING (`id`)  LEFT JOIN `T_BBB` USING (`E1`,`E2`,`E3`)  RIGHT JOIN `T_CCC` AS `c1` ON `a`.`GG`=`c1`.`HH` AND `II`.`KK` =`c1`.`LL`  WHERE `user`.`email` NOT IN ( ?, ?, ?) AND `user`.`uid` < ? AND `uid` IS NOT NULL AND `count` NOT IN ( ?, ?, ?) AND `int_num` != ? AND `double_num` != ? AND `column_a` LIKE ? AND ( `column_b` NOT LIKE ? OR `column_b` NOT LIKE ? OR `column_b` NOT LIKE ? ) AND ( `column_c` LIKE ? OR `column_c` LIKE ? ) AND ( `column_d` NOT LIKE ? OR `column_d` NOT LIKE ? ) AND ( `age` BETWEEN ? AND ?)  AND ( ( `user_name` IS NULL OR `email` = ? ) AND ( `user_name` = ? OR `email` = ? )) AND ( `user_name` != ? OR `promoted` != ? ) GROUP BY age,gender HAVING `uid`.`num` > ? AND `uid` IS NOT NULL AND `column_a` NOT LIKE ? ORDER BY  `user`.`score` , `time` DESC LIMIT 20"
   ["bind_value"]=>
@@ -116,4 +116,6 @@ array(2) {
     [25]=>
     string(5) "%red%"
   }
+  ["is_single_column"]=>
+  int(0)
 }
