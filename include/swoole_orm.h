@@ -40,7 +40,6 @@
 
 #include "php7_wrapper.h"
 #include "swoole_orm_config.h"
-#include "error.h"
 #include <ext/standard/php_var.h>
 #include <ext/standard/php_string.h>
 
