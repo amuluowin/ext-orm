@@ -118,6 +118,8 @@ typedef unsigned long ulong_t;
 
 /////////////////////// 基础函数 ///////////////////////
 #define sw_orm_php_fatal_error(level, fmt_str, ...)   php_error_docref(NULL TSRMLS_CC, level, fmt_str, ##__VA_ARGS__)
+
+/*
 static sw_orm_inline void zval_debug(char* name, zval* p) {
     php_printf("----------%s----------\n", name);
     php_debug_zval_dump(p, 1);
@@ -139,7 +141,7 @@ static sw_orm_inline void info_debug(char* name) {
 }
 static sw_orm_inline void term_debug(char* term_info) {
     php_error_docref(NULL TSRMLS_CC, E_ERROR, term_info);
-}
+}*/
 
 //////////////////// memory.c ///////////////////////////
 static sw_orm_inline void sw_orm_emalloc_and_init(void **tmp, size_t size) {
