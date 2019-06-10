@@ -1,6 +1,6 @@
 English | [中文](./README-CN.md)
 
-MySQL ORM User Guide
+Database ORM User Guide
 ===
 
 ## Catalogue
@@ -8,7 +8,7 @@ MySQL ORM User Guide
   - Requirement
   - Compile swoole_orm in linux
   - Create test table
-  - Start Coroutine MySQL
+  - Start Coroutine MySQL / PostgreSQL
   - Native SQL query
   - Error Info
   - Where statement
@@ -21,7 +21,7 @@ MySQL ORM User Guide
   - Connection Pool
 
 ## Instruction
-  1、Fast : swoole_orm is an mysql database ORM written in c, built in php extension, as we known, database ORM is a very time-consuming operation, especially for interpretive languages such as PHP, and for a project, the proportion of ORM is very high,so here I will implement the MySQL ORM operation in C language, and use the performance of C language to improve the performance of ORM.<br>
+  1、Fast : swoole_orm is an database ORM written in c, built in php extension, it can be use in Mysql and PostgreSQL and Other Database engine, as we known, database ORM is a very time-consuming operation, especially for interpretive languages such as PHP, and for a project, the proportion of ORM is very high,so here I will implement the database ORM operation in C language, and use the performance of C language to improve the performance of ORM.<br>
   2、Safe : swoole_orm return sql and bind value, you can solve SQL injection through parameter binding. <br>
   3、Powerful : concise and powerful usage , support any operation in database.<br>
   4、Easy : Extremely easy to learn and use, friendly construction.<br>
@@ -69,6 +69,8 @@ $options['password'] = 'hao123123';
 $options['database'] = 'user';
 $ret = $mysql->connect($options);
 ```
+
+it alse can be used in PostgreSQL and other database.
 
 ## Native SQL query
 - insert data
@@ -603,7 +605,7 @@ var_dump($sql_stat);
 
 
 ## Connection Pool
-
+it also can be used in PostgreSQL , and other database engine.
 ```php
 //usage.php
 include("DBConfig.php");
