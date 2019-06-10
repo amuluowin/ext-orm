@@ -1,6 +1,6 @@
 [English](./README.md) | 中文
 
-MySQL ORM 用户指南
+数据库 ORM 用户指南
 ===
 
 ## 目录
@@ -8,7 +8,7 @@ MySQL ORM 用户指南
   - 安装环境
   - linux环境编译 swoole_orm
   - 创建测试表
-  - 启动协程 MySQL
+  - 启动协程 MySQL/PostgreSQL
   - 原生SQL查询
   - 错误信息
   - Where 语句
@@ -21,11 +21,11 @@ MySQL ORM 用户指南
   - 协程版MySQL连接池
 
 ## 介绍
-  1、快速 - swoole_orm是一个为PHP扩展写的纯C语言写的mysql数据库ORM扩展，众所周知，数据库ORM是一个非常吃性能的操作，尤其对于解释性语言如PHP，而且对于一个项目来说，ORM大多数情况能占到项目很大的一个比例，所以这里我将MySQL的ORM操作用C语言实现，利用C语言的性能，提升ORM的性能。<br>
+  1、快速 - swoole_orm是一个为PHP扩展写的纯C语言数据库ORM扩展，可适用于MySQL/PostgreSQL等任何数据库引擎，众所周知，数据库ORM是一个非常吃性能的操作，尤其对于解释性语言如PHP，而且对于一个项目来说，ORM大多数情况能占到项目很大的一个比例，所以这里我将数据库的ORM操作用C语言实现，利用C语言的性能，提升ORM的性能。<br>
   2、安全 - swoole_orm返回的是sql语句和绑定参数值，能通过参数绑定的方式解决SQL注入的问题。<br>
   3、强大 - 便捷的函数，支持所有数据库操作。<br>
   4、简单 - 使用和学习非常简单，界面友好。<br>
-  5、连接池 - 我们可以通过 swoole 的 channel 和 Corountine MySQL 来实现协程版 MySQL 连接池。<br>
+  5、连接池 - 我们可以通过 swoole 的 channel 和 Corountine MySQL 来实现协程版 MySQL 连接池，也可用于 PostgreSQL 等其他数据库<br>
   
 ## 安装环境
 - PHP 7.0 + 
@@ -69,6 +69,8 @@ $options['password'] = 'hao123123';
 $options['database'] = 'user';
 $ret = $mysql->connect($options);
 ```
+
+也可用于 PostgreSQL 等其他数据库。
 
 ## 原生SQL查询
 - insert data
@@ -602,7 +604,7 @@ var_dump($sql_stat);
 ```
 
 ## 协程版MySQL连接池
-
+本 ORM 适用于所有关系型数据库，这里仅以MySQL为例。
 ```php
 //usage.php
 include("DBConfig.php");
