@@ -1,4 +1,4 @@
-中文 | [English](./README.md)
+中文 | [English](./README-EN.md)
 
 数据库 ORM 用户指南
 ===

@@ -1,4 +1,4 @@
-English | [中文](./README-CN.md)
+[中文](./README.md) | English
 
 Database ORM User Guide
 ===
