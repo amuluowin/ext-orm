@@ -1,40 +1,40 @@
-English | [中文](./README-CN.md)
+中文 | [English](./README.md)
 
-Database ORM User Guide
+数据库 ORM 用户指南
 ===
 
-## Catalogue
-  - Instruction
-  - Requirement
-  - Compile swoole_orm in linux
-  - Create test table
-  - Start Coroutine MySQL / PostgreSQL
-  - Native SQL query
-  - Error Info
-  - Where statement
-  - Select statement
-  - Insert statement
-  - Replace statement
-  - Update statement
-  - Delete statement
-  - Whole Example
-  - Connection Pool
+## 目录
+  - 介绍
+  - 安装环境
+  - linux环境编译 swoole_orm
+  - 创建测试表
+  - 启动协程 MySQL/PostgreSQL
+  - 原生SQL查询
+  - 错误信息
+  - Where 语句
+  - Select 语句
+  - Insert 语句
+  - Replace 语句
+  - Update 语句
+  - Delete 语句
+  - 完整的例子
+  - 协程版MySQL连接池
 
-## Instruction
-  1、Fast : swoole_orm is an database ORM written in c, built in php extension, it can be use in Mysql and PostgreSQL and Other Database engine, as we known, database ORM is a very time-consuming operation, especially for interpretive languages such as PHP, and for a project, the proportion of ORM is very high,so here I will implement the database ORM operation in C language, and use the performance of C language to improve the performance of ORM.<br>
-  2、Safe : swoole_orm return sql and bind value, you can solve SQL injection through parameter binding. <br>
-  3、Powerful : concise and powerful usage , support any operation in database.<br>
-  4、Easy : Extremely easy to learn and use, friendly construction.<br>
-  5、Connection-pool : we can build connection pool by swoole channel and Coroutine MySQL<br><br>
+## 介绍
+  1、快速 - swoole_orm是一个为PHP扩展写的纯C语言数据库ORM扩展，可适用于MySQL/PostgreSQL等任何数据库引擎，众所周知，数据库ORM是一个非常吃性能的操作，尤其对于解释性语言如PHP，而且对于一个项目来说，ORM大多数情况能占到项目很大的一个比例，所以这里我将数据库的ORM操作用C语言实现，利用C语言的性能，提升ORM的性能。<br>
+  2、安全 - swoole_orm返回的是sql语句和绑定参数值，能通过参数绑定的方式解决SQL注入的问题。<br>
+  3、强大 - 便捷的函数，支持所有数据库操作。<br>
+  4、简单 - 使用和学习非常简单，界面友好。<br>
+  5、连接池 - 我们可以通过 swoole 的 channel 和 Corountine MySQL 来实现协程版 MySQL 连接池，也可用于 PostgreSQL 等其他数据库<br>
   
-## Requirement
+## 安装环境
 - PHP 7.0 + 
 
-## Compile swoole_orm in linux
+## linux环境编译 swoole_orm
 ```
-## path to is your PHP install dir , dest lib: swoole_orm.so
+## path/to 是你的PHP安装目录, 目标库: swoole_orm.so
 
-$cd ~/ext-orm
+$cd ext-orm
 $/path/to/phpize
 $chmod +x ./configure
 $./configure --with-php-config=/path/to/php-config
@@ -42,7 +42,7 @@ $make
 $make install 
 ```
 
-## Create test table
+## 创建测试表
 ```sql
 CREATE TABLE `user_info_test` (
   `uid` int(11) NOT NULL COMMENT 'userid' AUTO_INCREMENT,
@@ -56,7 +56,7 @@ CREATE TABLE `user_info_test` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='userinfo';
 ```
 
-## Start Coroutine MySQL
+## 启动协程 MySQL
 - new Swoole\Coroutine\MySQL();
 
 ```php
@@ -70,9 +70,9 @@ $options['database'] = 'user';
 $ret = $mysql->connect($options);
 ```
 
-it alse can be used in PostgreSQL and other database.
+也可用于 PostgreSQL 等其他数据库。
 
-## Native SQL query
+## 原生SQL查询
 - insert data
 ```php
 $ret = $mysql->query("insert into user_info_test(username, sexuality, age, height) 
@@ -109,19 +109,19 @@ if ($ret === false) {
 }
 ```
 
-## Error Info
+## 错误信息
 
-Error codes and error messages can be obtained through the errno and error params<br>
+错误码和错误信息可以从 Swoole\Coroutine\MySQL 对象的成员变量 errno 和 error 中获取<br>
 
 ```php
 $code = $mysql->errno;
 $info = $mysql->error;
 ```
 
-## Where statement
-- Basic usage
+## Where 语句
+- 基础用法
 ```php
-//sql_stat is an array, 
+//swoole_orm::select 的返回是一个数组，包含 sql 和参数绑定值。采用参数绑定方式执行SQL更安全。避免被注入
 //sql_stat['sql'] : SELECT * FROM `user_info_test` WHERE `sexuality` = ?
 //sql_stat['bind_value'] : array("male")
 
@@ -146,7 +146,7 @@ swoole_orm::select("user_info_test", "*", ["age[><]" => [28, 29]]); // WHERE age
 
 swoole_orm::select("user_info_test", "*", ["username" => ["Tom", "Red", "carlo"]]); // WHERE username in ('Tom', 'Red', 'carlo')
 
-//Multiple conditional query
+//多条件查询
 swoole_orm::select("user_info_test", "*", [
     "uid[!]" => 10,
     "username[!]" => "James",
@@ -157,9 +157,9 @@ swoole_orm::select("user_info_test", "*", [
 // WHERE uid != 10 AND username != "James" AND height NOT IN ( 165, 168, 172) AND bool_flag = 1 AND remark IS NOT NULL
 ```
 
-- Conditional Query
+- 组合查询
 
-You can use "AND" or "OR" to make up very complex SQL statements.
+你可以用 "AND" 或者 "OR" 来组合更复杂的语句。
 ```php
 swoole_orm::select("user_info_test", "*", [
   "OR" => [
@@ -181,7 +181,7 @@ swoole_orm::select("user_info_test", "*", [
 ]);
 // WHERE (age = 29 OR sexuality='female') AND height = 177
 
-//Attention： Because mysql uses array arguments, the first OR is overwritten, the following usage is wrong, 
+//注意：由于mysql使用数组参数，所以在下面的情况下，第一个 OR 会被覆盖。
 swoole_orm::select("user_info_test", "*", [
   "AND" => [
     "OR" => [
@@ -196,7 +196,7 @@ swoole_orm::select("user_info_test", "*", [
 ]);
 // [X] SELECT * FROM user_info_test WHERE (uid != 3 OR height >= 170)
 
-//We can use # and comments to distinguish between two diffrents OR
+//我们可以使用 "#" 加注释的方式去区分两个 "OR"
 swoole_orm::select("user_info_test", "*", [
   "AND" => [
     "OR #1" => [
@@ -211,7 +211,7 @@ swoole_orm::select("user_info_test", "*", [
 ]);
 // [√] SELECT * FROM user_info_test WHERE (age = 29 OR sexuality = 'female') AND (uid != 3 OR height >= 170)
 ```
-- Fuzzy Matching _Like_
+- 模糊匹配 _Like_
 
 LIKE USAGE [~].
 ```php
@@ -269,7 +269,7 @@ swoole_orm::select("user_info_test", "sexuality,age,height", [
 //SELECT uid FROM `user_info_test` GROUP BY sexuality,age,height HAVING `age` > 30
 ```
 
-## Select statement
+## Select 语句
 - usage
 
 ```php
@@ -277,36 +277,36 @@ select($table, $columns, $where)
 ```
 
 #### table [string]
-> table name
+> 表名
 
 #### columns [string/array]
-> Columns to be queried.
+> 需要查询的列
 
 #### where (optional) [array]
-> The conditions of the query.
+> 查询条件
 
 ```php
 select($table, $join, $columns, $where) 
 ```
 #### table [string]
-> table name
+> 表名
 
 #### join [array]
-> Multi-table query, can be ignored if not used.
+> 多表关联join查询，不使用可以忽略
 
 #### columns [string/array]
-> Columns to be queried.
+> 需要查询的列
 
 #### where (optional) [array]
-> The conditions of the query.
+> 查询条件
 
 #### return: [array]
->Fail if false is returned, otherwise an array with select sql and bind value.
+> 失败返回false，否则返回一个数组，包含查询语句 sql 和绑定参数 bind_value.
 <br>
 
 - example
 
-You can use * to match all fields, but if you specify columns you can improve performance.<br>
+你可以使用 * 来查询所有列，不过指定列可以提升性能。<br>
 ```php
 $sql_stat = swoole_orm::select("user_info_test", ["uid", "username"], ["age[>]" => 31]);
 
@@ -328,14 +328,14 @@ if ($sql_stat !== false) {
 //  )
 // )
 
-// Select all columns
+// 查询所有列
 swoole_orm::select("user_info_test", "*");
 ```
 <br>
 
 - Table join
 
-Multi-table query SQL is more complicated, and it can be easily solved with mysql.<br>
+多表查询更复杂，但是他可以被swoole_orm轻易实现。<br>
 
 ```php
 // [>] == RIGH JOIN
@@ -344,19 +344,19 @@ Multi-table query SQL is more complicated, and it can be easily solved with mysq
 // [><] == INNER JOIN
 
 swoole_orm::select("user_info_test",
-[ // Table Join Info
+[ // 表join。
   "[>]account" => ["uid" => "userid"], // RIGHT JOIN `account` ON `user_info_test`.`uid`= `account`.`userid`
  
-  // This is a shortcut to declare the relativity if the row name are the same in both table.
+  // 如果两个参与join的表列名相同，则使用下面快捷表达方式。
   "[>]album" => "uid", //RIGHT JOIN `album` USING (`uid`) 
   
-  // Like above, there are two row or more are the same in both table.
+  // 如上，两个表中多个列名相同的情况。
   "[<]detail" => ["uid", "age"], // LEFT JOIN `detail` USING (`uid`,`age`)
  
-  // You have to assign the table with alias.
+  // 为表分配别名。
   "[<]address(addr_alias)" => ["uid" => "userid"], //LEFT JOIN `address` AS `addr_alias` ON `user_info_test`.`uid`=`addr_alias`.`userid`
  
-  // You can refer the previous joined table by adding the table name before the column.
+  // 可以在列之前加上表名来引用之前的联结表。
   "[<>]album" => ["account.userid" => "userid"], //FULL JOIN `album` ON  `account`.`userid` = `album`.`userid`
  
   // Multiple condition
@@ -396,7 +396,7 @@ swoole_orm::select("user_info_test",
 
 - alias
 
-You can use aliases to prevent field conflicts<br>
+使用别名来防止冲突。<br>
 
 ```php
 $data = swoole_orm::select("user_info_test(uinfo)", [
@@ -411,19 +411,19 @@ $data = swoole_orm::select("user_info_test(uinfo)", [
 // LEFT JOIN `account` AS `A` USING (`userid`)
 ```
 
-## Insert statement
+## Insert 语句
 
 ```php
 insert($table, $data)
 ```
 #### table [string]
-> table name
+> 表名
 
 #### data [array]
-> insert data
+> 要插入的数据
 
 #### return [int]
->Fail if false is returned, otherwise an array with insert sql and bind value.<br>
+> 失败返回false，否则返回一个数组，包含查询语句 sql和绑定参数bind_value。
  
 ```php
 $data = array('username' => 'smallhow','sexuality' => 'male','age' => 35, 'height' => '168');
@@ -442,19 +442,19 @@ if ($sql_stat !== false) {
 
 ```
 
-## Replace statement
+## Replace 语句
 
 ```php
 replace($table, $data)
 ```
 #### table [string]
-> table name
+> 表名
 
 #### data [array]
-> replace data
+> 需要替换的数据
 
 #### return [int]
->Fail if false is returned, otherwise an array with replace sql and bind value.<br>
+> 失败返回false，否则返回一个数组，包含查询语句 sql和绑定参数bind_value。
  
 ```php
 $data = array('uid' => 35, 'username' => 'smallhow','sexuality' => 'male','age' => 35, 'height' => '168');
@@ -472,22 +472,22 @@ if ($sql_stat !== false) {
 
 ```
 
-## Update statement
+## Update 语句
 
 ```php
 update($table, $data, $where)
 ```
 #### table [string]
-> table name
+> 表名
 
 #### data [array]
-> update data
+> 需要更新的数据
 
 #### where (optional) [array]
-> where condition [可选]
+> where条件 [可选]
 
 #### return [int]
->Fail if false is returned, otherwise an array with select sql and bind value.<br>
+> 失败返回false，否则返回一个数组，包含查询语句 sql 和绑定参数 bind_value.<br>
 
 ```php
 $data = array('height' => 185,'age' => 32);
@@ -505,19 +505,19 @@ if ($sql_stat !== false) {
 }
 ```
 
-## Delete statement
+## Delete 语句
 
 ```php
 delete($table, $where)
 ```
 #### table [string]
-> table name
+> 表名
 
 #### where (optional) [array]
-> where condition [可选]
+> where 条件 [可选]
 
 #### return [int]
->Fail if false is returned, otherwise an array with select sql and bind value.<br>
+> 失败返回false，否则返回一个数组，包含查询语句 sql 和绑定参数 bind_value.<br>
 
 ```php
 $where = array('username' => 'smallhow');
@@ -534,7 +534,7 @@ if ($sql_stat !== false) {
 }
 ```
 
-## Whole Example
+## 完整例子
 
 ```php
 $table = "table_a(a)";
@@ -603,9 +603,8 @@ $sql_stat = swoole_orm::select($table, $join, $columns, $where);
 var_dump($sql_stat);
 ```
 
-
-## Connection Pool
-it also can be used in PostgreSQL , and other database engine.
+## 协程版MySQL连接池
+本 ORM 适用于所有关系型数据库，这里仅以MySQL为例。
 ```php
 //usage.php
 include("DBConfig.php");
@@ -847,7 +846,7 @@ class MySQLPool {
                 echo "MySQL QUERY FAIL [".$mysql->errno."][".$mysql->error."], sql=[{$sql}], map=[".json_encode($map)."]";
 
                 if ($mysql->errno == 2006 || $mysql->errno == 2013) {
-                    //reconnect MySQL
+                    //重连MySQL
                     $ret = $this->connect($mysql, true);
                     if ($ret) {
                         $ret = $this->real_query($mysql, $sql, $map);
