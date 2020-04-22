@@ -27,6 +27,8 @@ Database ORM User Guide
   4、Easy : Extremely easy to learn and use, friendly construction.<br>
   5、Connection-pool : we can build connection pool by swoole channel and Coroutine MySQL<br><br>
   
+ you can see typical example in this repositories  https://github.com/caohao-php/ycsocket  <br>
+  
 ## Requirement
 - PHP 7.0 + 
 
