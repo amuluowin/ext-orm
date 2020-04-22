@@ -26,8 +26,10 @@
   3、强大 - 便捷的函数，支持所有数据库操作。<br>
   4、简单 - 使用和学习非常简单，界面友好。<br>
   5、连接池 - 我们可以通过 swoole 的 channel 和 Corountine MySQL 来实现协程版 MySQL 连接池，也可用于 PostgreSQL 等其他数据库<br>
-  
-完整典型的应用在： https://github.com/caohao-php/ycsocket <br>
+
+## 应用场景
+完整典型的应用在： https://github.com/caohao-php/ycsocket  ，一个大型RPG游戏的服务端框架：<br>
+![Image](https://github.com/caohao-php/ycsocket/blob/master/image/1.jpeg)
 
 ## 安装环境
 - PHP 7.0 + 
