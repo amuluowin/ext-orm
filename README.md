@@ -28,7 +28,7 @@
   5、连接池 - 我们可以通过 swoole 的 channel 和 Corountine MySQL 来实现协程版 MySQL 连接池，也可用于 PostgreSQL 等其他数据库<br>
 
 ## 应用场景
-完整典型的应用在： https://github.com/caohao-php/ycsocket  ，一个大型RPG游戏的服务端框架，该游戏采用纯php解决方案，php + swoole + ext-orm + zephir ，这个游戏的战斗部分完全用 zephir 来编写成 php 扩展，微信小游戏搜索："剑的传说"<br><br>
+完整典型的应用在： https://github.com/caohao-php/ycsocket  ，一个大型RPG游戏的服务端框架，该游戏采用纯php解决方案，php + swoole + ext-orm + zephir ，这个游戏的战斗部分完全用 zephir 来编写成 php 扩展，兼顾性能和开发效率，微信小游戏搜索："剑的传说"<br><br>
 ![Image](https://github.com/caohao-php/ycsocket/blob/master/image/1.jpeg)
 
 ## 安装环境
